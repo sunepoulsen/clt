@@ -18,10 +18,10 @@ public interface SubCommandExecutor {
     /**
      * Validates the state of arguments to the sub command.
      */
-    void validateArguments();
+    void validateArguments() throws CliException;
 
     /**
      * Performs the action of a sub command.
      */
-    void performAction();
+    void performAction() throws CliException;
 }

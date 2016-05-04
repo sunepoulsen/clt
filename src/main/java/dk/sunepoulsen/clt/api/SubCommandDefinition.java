@@ -30,5 +30,5 @@ public interface SubCommandDefinition {
      *
      * @return A sub command executor to execute the sub command.
      */
-    SubCommandExecutor createExecutor( CommandLine line );
+    SubCommandExecutor createExecutor( CommandLine line ) throws CliException;
 }

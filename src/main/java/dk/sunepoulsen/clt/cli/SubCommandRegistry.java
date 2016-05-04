@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-package dk.sunepoulsen.clt.handler;
+package dk.sunepoulsen.clt.cli;
 
 //-----------------------------------------------------------------------------
 import dk.sunepoulsen.clt.api.SubCommand;
@@ -20,6 +20,20 @@ import java.util.Set;
 public class SubCommandRegistry {
     public SubCommandRegistry() {
         this.subCommands = new HashMap<>();
+
+        addHelpCommand();
+    }
+
+    public void addSubCommands( String packageName ) throws IllegalAccessException, InstantiationException {
+        logger.entry();
+
+        try {
+            Reflections reflections = new Reflections( packageName );
+            addSubCommands( reflections );
+        }
+        finally {
+            logger.exit();
+        }
     }
 
     public void addSubCommands( Reflections reflections ) throws IllegalAccessException, InstantiationException {
@@ -30,6 +44,9 @@ public class SubCommandRegistry {
             Iterator<Class<?>> iterator = candidates.iterator();
             while( iterator.hasNext() ) {
                 Class<?> clazz = iterator.next();
+                if( clazz == HelpDefinition.class ) {
+                    continue;
+                }
 
                 SubCommand subCommand = clazz.getAnnotation( SubCommand.class );
 
@@ -42,6 +59,10 @@ public class SubCommandRegistry {
         finally {
             logger.exit();
         }
+    }
+
+    public Set<Map.Entry<String, SubCommandDefinition>> getCommands() {
+        return subCommands.entrySet();
     }
 
     /**
@@ -77,6 +98,25 @@ public class SubCommandRegistry {
         }
         finally {
             logger.exit( result );
+        }
+    }
+
+    private void addHelpCommand() {
+        logger.entry();
+
+        try {
+            HelpDefinition helpDef = new HelpDefinition( this );
+            SubCommand subCommand = helpDef.getClass().getAnnotation( SubCommand.class );
+
+            if( subCommand != null ) {
+                subCommands.put( subCommand.name(), helpDef );
+            }
+            else {
+                logger.warn( "Unable to add 'help' command, because it is not annotated with '@SubCommand'" );
+            }
+        }
+        finally {
+            logger.exit();
         }
     }
 

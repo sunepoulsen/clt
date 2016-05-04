@@ -12,5 +12,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention( value = RetentionPolicy.RUNTIME )
 public @interface SubCommand {
     String name();
+    String usage() default "";
     String description() default "";
 }
