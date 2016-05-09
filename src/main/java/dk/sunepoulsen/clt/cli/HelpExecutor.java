@@ -2,6 +2,7 @@
 package dk.sunepoulsen.clt.cli;
 
 //-----------------------------------------------------------------------------
+
 import dk.sunepoulsen.clt.api.CliException;
 import dk.sunepoulsen.clt.api.SubCommand;
 import dk.sunepoulsen.clt.api.SubCommandDefinition;
@@ -9,7 +10,6 @@ import dk.sunepoulsen.clt.api.SubCommandExecutor;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.Map;
 
 //-----------------------------------------------------------------------------
@@ -55,16 +55,16 @@ public class HelpExecutor implements SubCommandExecutor {
         logger.entry();
 
         try {
-            logger.info( "Help to program..." );
-            logger.info( "" );
-            logger.info( "Commands:" );
-            logger.info( "" );
+            output.info( "Help to program..." );
+            output.info( "" );
+            output.info( "Commands:" );
+            output.info( "" );
 
             for( Map.Entry<String, SubCommandDefinition> entry : registry.getCommands() ) {
                 SubCommand subCommand = entry.getValue().getClass().getAnnotation( SubCommand.class );
 
                 if( subCommand != null ) {
-                    logger.info( "{} - {}", entry.getKey(), subCommand.description() );
+                    output.info( "{} - {}", entry.getKey(), subCommand.description() );
                 }
             }
         }
@@ -89,6 +89,7 @@ public class HelpExecutor implements SubCommandExecutor {
     //-------------------------------------------------------------------------
 
     private static final XLogger logger = XLoggerFactory.getXLogger( HelpExecutor.class );
+    private static final XLogger output = XLoggerFactory.getXLogger( CliApplication.OUTPUT_LOGGER_NAME );
 
     private SubCommandRegistry registry;
     private String subCommandName;

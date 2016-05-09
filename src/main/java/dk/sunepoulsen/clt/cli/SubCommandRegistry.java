@@ -112,7 +112,7 @@ public class SubCommandRegistry {
                 subCommands.put( subCommand.name(), helpDef );
             }
             else {
-                logger.warn( "Unable to add 'help' command, because it is not annotated with '@SubCommand'" );
+                output.warn( "Unable to add 'help' command, because it is not annotated with '@SubCommand'" );
             }
         }
         finally {
@@ -125,6 +125,7 @@ public class SubCommandRegistry {
     //-------------------------------------------------------------------------
 
     private static final XLogger logger = XLoggerFactory.getXLogger( SubCommandRegistry.class );
+    private static final XLogger output = XLoggerFactory.getXLogger( CliApplication.OUTPUT_LOGGER_NAME );
 
     /**
      * Simple map of sub command names and sub command definitions.

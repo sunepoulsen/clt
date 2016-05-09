@@ -35,7 +35,7 @@ public class CliApplication {
             System.exit( 0 );
         }
         catch( CliException ex ) {
-            logger.error( ex.getMessage() );
+            output.error( ex.getMessage() );
             logger.catching( XLogger.Level.DEBUG, ex );
 
             System.exit( 1 );
@@ -49,7 +49,10 @@ public class CliApplication {
     //              Members
     //-------------------------------------------------------------------------
 
+    public static final String OUTPUT_LOGGER_NAME = "Cli.Output.Logger";
+
     private static final XLogger logger = XLoggerFactory.getXLogger( CliApplication.class );
+    private static final XLogger output = XLoggerFactory.getXLogger( OUTPUT_LOGGER_NAME );
 
     private SubCommandRegistry registry;
     private CliInterpreter interpreter;
