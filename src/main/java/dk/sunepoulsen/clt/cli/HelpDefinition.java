@@ -21,7 +21,8 @@ import org.slf4j.ext.XLoggerFactory;
     description = "Show help for all or a single command."
 )
 public class HelpDefinition implements SubCommandDefinition {
-    public HelpDefinition( SubCommandRegistry registry ) {
+    public HelpDefinition( String programHelpText, SubCommandRegistry registry ) {
+        this.programHelpText = programHelpText;
         this.registry = registry;
     }
 
@@ -36,11 +37,11 @@ public class HelpDefinition implements SubCommandDefinition {
 
         try {
             if( line.getArgList().isEmpty() ) {
-                return new HelpExecutor( registry );
+                return new HelpExecutor( programHelpText, registry );
             }
 
             if( line.getArgList().size() == 1 ) {
-                return new HelpExecutor( registry, line.getArgList().get( 0 ) );
+                return new HelpExecutor( programHelpText, registry, line.getArgList().get( 0 ) );
             }
 
             throw new CliException( "The subcommand 'help' only accepts one argument" );
@@ -56,5 +57,6 @@ public class HelpDefinition implements SubCommandDefinition {
 
     private static final XLogger logger = XLoggerFactory.getXLogger( HelpDefinition.class );
 
+    private String programHelpText;
     private SubCommandRegistry registry;
 }

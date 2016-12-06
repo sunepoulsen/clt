@@ -18,7 +18,8 @@ import java.util.Set;
  * Registry of all the sub commands that is supported by the main program.
  */
 public class SubCommandRegistry {
-    public SubCommandRegistry() {
+    public SubCommandRegistry( String programHelpText ) {
+        this.programHelpText = programHelpText;
         this.subCommands = new HashMap<>();
 
         addHelpCommand();
@@ -105,7 +106,7 @@ public class SubCommandRegistry {
         logger.entry();
 
         try {
-            HelpDefinition helpDef = new HelpDefinition( this );
+            HelpDefinition helpDef = new HelpDefinition( programHelpText, this );
             SubCommand subCommand = helpDef.getClass().getAnnotation( SubCommand.class );
 
             if( subCommand != null ) {
@@ -126,6 +127,8 @@ public class SubCommandRegistry {
 
     private static final XLogger logger = XLoggerFactory.getXLogger( SubCommandRegistry.class );
     private static final XLogger output = XLoggerFactory.getXLogger( CliApplication.OUTPUT_LOGGER_NAME );
+
+    private String programHelpText;
 
     /**
      * Simple map of sub command names and sub command definitions.

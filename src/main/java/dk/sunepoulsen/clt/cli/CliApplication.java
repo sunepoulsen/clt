@@ -13,15 +13,15 @@ import org.slf4j.ext.XLoggerFactory;
  * Created by sunepoulsen on 17/04/16.
  */
 public class CliApplication {
-    public CliApplication( String packageName ) throws IllegalAccessException, InstantiationException {
-        this( new Reflections( packageName ) );
+    public CliApplication( String programHelpText, String packageName ) throws IllegalAccessException, InstantiationException {
+        this( programHelpText, new Reflections( packageName ) );
     }
 
-    public CliApplication( Reflections reflections ) throws InstantiationException, IllegalAccessException {
-        registry = new SubCommandRegistry();
+    public CliApplication( String programHelpText, Reflections reflections ) throws InstantiationException, IllegalAccessException {
+        registry = new SubCommandRegistry( programHelpText );
         registry.addSubCommands( reflections );
 
-        interpreter = new CliInterpreter( registry );
+        interpreter = new CliInterpreter( programHelpText, registry );
     }
 
     public void main( String[] args ) {

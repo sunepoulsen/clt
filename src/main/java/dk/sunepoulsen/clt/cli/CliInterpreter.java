@@ -19,7 +19,8 @@ import java.util.Arrays;
  * subcommand to be executed.
  */
 public class CliInterpreter {
-    public CliInterpreter( SubCommandRegistry registry ) {
+    public CliInterpreter( String programHelpText, SubCommandRegistry registry ) {
+        this.programHelpText = programHelpText;
         this.registry = registry;
     }
 
@@ -28,7 +29,7 @@ public class CliInterpreter {
 
         try {
             if( args.length == 0 ) {
-                return new HelpExecutor( registry );
+                return new HelpExecutor( programHelpText, registry );
             }
 
             SubCommandDefinition definition = registry.find( args[0] );
@@ -53,5 +54,6 @@ public class CliInterpreter {
 
     private static final XLogger logger = XLoggerFactory.getXLogger( CliInterpreter.class );
 
+    private String programHelpText;
     private SubCommandRegistry registry;
 }

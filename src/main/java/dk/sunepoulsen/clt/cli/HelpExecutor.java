@@ -10,6 +10,7 @@ import dk.sunepoulsen.clt.api.SubCommandExecutor;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+import java.util.Arrays;
 import java.util.Map;
 
 //-----------------------------------------------------------------------------
@@ -17,11 +18,12 @@ import java.util.Map;
  * Created by sunepoulsen on 17/04/16.
  */
 public class HelpExecutor implements SubCommandExecutor {
-    public HelpExecutor( SubCommandRegistry registry ) {
-        this( registry, null );
+    public HelpExecutor( String programHelpText, SubCommandRegistry registry ) {
+        this( programHelpText, registry, null );
     }
 
-    public HelpExecutor( SubCommandRegistry registry, String subCommandName ) {
+    public HelpExecutor( String programHelpText, SubCommandRegistry registry, String subCommandName ) {
+        this.programHelpText = programHelpText;
         this.registry = registry;
         this.subCommandName = subCommandName;
     }
@@ -55,7 +57,8 @@ public class HelpExecutor implements SubCommandExecutor {
         logger.entry();
 
         try {
-            output.info( "Help to program..." );
+            String[] helpLines = programHelpText.split( System.lineSeparator() );
+            Arrays.stream( helpLines ).forEach( it -> output.info( it ) );
             output.info( "" );
             output.info( "Commands:" );
             output.info( "" );
@@ -91,6 +94,7 @@ public class HelpExecutor implements SubCommandExecutor {
     private static final XLogger logger = XLoggerFactory.getXLogger( HelpExecutor.class );
     private static final XLogger output = XLoggerFactory.getXLogger( CliApplication.OUTPUT_LOGGER_NAME );
 
+    private String programHelpText;
     private SubCommandRegistry registry;
     private String subCommandName;
 }
